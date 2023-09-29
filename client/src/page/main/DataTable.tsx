@@ -195,10 +195,11 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 
 interface EnhancedTableToolbarProps {
     numSelected: number;
+    setOpen: (value: boolean) => void;
 }
 
 function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-    const { numSelected } = props;
+    const { numSelected, setOpen } = props;
 
     return (
         <Toolbar
@@ -206,7 +207,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
                 pl: { sm: 2 },
                 pr: { xs: 1, sm: 1 },
                 ...(numSelected > 0 && {
-                    bgcolor: (theme) =>
+                    bgcolor: (theme: any) =>
                         alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
                 }),
             }}
@@ -240,7 +241,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
                 </Tooltip>
             ) : (
                 <>
-                    <IconButton size="large">
+                    <IconButton size="large" onClick={() => setOpen(true)}>
                         <AddCircleIcon fontSize="large" />
                     </IconButton>
                     <IconButton size="large">
@@ -257,6 +258,7 @@ export default function EnhancedTable() {
     const [orderBy, setOrderBy] = React.useState<keyof Data>('calories');
     const [selected, setSelected] = React.useState<readonly string[]>([]);
     const [page, setPage] = React.useState(0);
+    const [open, setOpen] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
     const handleRequestSort = (
@@ -323,7 +325,7 @@ export default function EnhancedTable() {
     return (
         <Box sx={{ width: '100%' }}>
             <Paper sx={{ width: '100%', mb: 2 }}>
-                <EnhancedTableToolbar numSelected={selected.length} />
+                <EnhancedTableToolbar numSelected={selected.length} open={open} setOpen={setOpen} />
                 <TableContainer>
                     <Table
                         sx={{ minWidth: 750 }}
@@ -401,7 +403,7 @@ export default function EnhancedTable() {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
-            <CreateRequestForm />
+            <CreateRequestForm open={open} setOpen={setOpen} />
         </Box>
     );
 }
