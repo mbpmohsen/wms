@@ -1,0 +1,63 @@
+@use "sass:math"
+@import "../variables"
+@import "media-query"
+
+// --------------------- Col ---------------------- //
+=col()
+  $Col: 12
+  @for $i from 1 through $Col
+    .col-#{$i}
+      width: math.div(100%, $Col * $i)
+
+  @for $i from 1 through $Col
+    +breakpoint(extraLargeScreensTvs)
+      .col-xl-#{$i}
+        width: math.div(100%, $Col * $i)
+
+  @for $i from 1 through $Col
+    +breakpoint(desktopsLargeScreens)
+      .col-sm-#{$i}
+        width: math.div(100%, $Col * $i)
+
+// --------------------- Flex ---------------------- //
+
+=flex()
+  $Flex: 50
+  @for $i from 1 through $Flex
+    .flex-#{$i}
+      flex: $i !important
+
+// --------------------- Space ---------------------- //
+=marginSpace()
+  $spaceAmounts: (0, 4, 8, 12, 16, 24, 32, 48, 64)
+  $sides: (top, bottom, left, right)
+  $singleMargin: 4
+
+  @each $space in $spaceAmounts
+    @each $side in $sides
+      .m-#{str-slice($side, 0, 1)}-#{$space}
+        margin-#{$side}: #{$space}px !important
+
+      .p-#{str-slice($side, 0, 1)}-#{$space}
+        padding-#{$side}: #{$space}px !important
+
+    @each $i in $singleMargin
+      .m-#{$space}
+        margin: #{$space}px !important
+
+      .p-#{$space}
+        padding: #{$space}px !important
+
+      .m-x-#{$space}
+        margin: 0 #{$space}px !important
+
+      .m-y-#{$space}
+        margin: #{$space}px 0
+
+      .p-x-#{$space}
+        padding-right: #{$space}px
+        padding-left: #{$space}px
+
+      .p-y-#{$space}
+        padding-top: #{$space}px
+        padding-bottom: #{$space}px
